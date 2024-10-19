@@ -1,0 +1,75 @@
+  
+def insert():
+    import mysql.connector as con
+    mycon=con.connect(host='localhost',user='root',passwd='121234',
+                      database='mitdata')
+    if mycon.is_connected():
+        
+        stid=int(input("enter student id:"))
+        stname=input("enter student name:")
+        stno=input("enter student mobile number:")
+        strank=int(input("enter student rank in collage:"))
+
+    cur=mycon.cursor()
+    query="insert into students values ({},'{}','{}',{})".format(
+        stid,stname,stno,strank)
+    cur.execute(query)
+    mycon.commit()
+
+def update():
+    import mysql.connector as con
+    mycon=con.connect(host='localhost',user='root',passwd='121234',
+                      database='mitdata')
+    if mycon.is_connected():
+        stid=int(input("student id for updating rank:"))
+        strank=int(input("student new rank:"))
+    cur=mycon.cursor()
+    query="update students set strank=strank+{} where stid ={}".format(strank,stid)
+    cur.execute(query)
+    mycon.commit()
+def delete():
+    import mysql.connector as con
+    mycon=con.connect(host='localhost',user='root',passwd='121234',
+                      database='mitdata')
+    if mycon.is_connected():
+        stid=int(input("enter student id:"))
+    cur=mycon.cursor()
+    query='delete from students where stid={}'.format(stid)
+    cur.execute(query)
+    mycon.commit()
+
+def select():
+    import mysql.connector as con
+    mycon=con.connect(host='localhost',user='root',passwd='121234',
+                      database='mitdata')
+    if mycon.is_connected():
+        print("data base connected")
+    cur=mycon.cursor()
+    query='select * from students'
+    cur.execute(query)
+    rows=cur.fetchall()
+    for x in rows:
+        for y in x:
+            print(y,end=' ')
+        print()
+    mycon.commit()
+    
+database=True        
+while database:       
+    number=int(input('''
+                    1.for inserting into students table
+                    2.for updating into students table
+                    3.for deleting into students table
+                    4.for selecting from students table
+                    '''))
+    if number==1:
+        insert()
+    elif number== 2:
+        update()
+    elif number==3:
+        delete()
+    elif number==4:
+        select()
+    else:
+        print("incorrect number")
+        database=False
